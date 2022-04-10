@@ -2,6 +2,10 @@ package com.falabella.api.product.controller;
 
 import com.falabella.api.product.common.domain.Product;
 import com.falabella.api.product.business.service.ProductService;
+import com.falabella.api.product.common.exception.BadRequestException;
+import com.falabella.api.product.common.exception.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,47 +27,22 @@ public class ProductApiController {
     }
 
     @GetMapping("/{sku}")
-    private Mono<ResponseEntity<Product>> getProductBySku(@PathVariable String sku) {
-        Mono<Product> product = productService.getProductBySku(sku);
-        return product.map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+    private Mono<Product> getProductBySku(@PathVariable String sku) throws BadRequestException {
+        return productService.getProductBySku(sku);
     }
 
     @PostMapping()
-    private Mono<ResponseEntity<Product>> insertProduct(@RequestBody Product product) {
-        try {
-            return productService.saveProduct(product)
-                    .map(p -> ResponseEntity.status(HttpStatus.CREATED).body(p))
-                    .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).build()));
-        } catch (IllegalArgumentException e) {
-            return Mono.just(ResponseEntity.badRequest().build());
-        } catch (Exception e) {
-            return Mono.just(ResponseEntity.internalServerError().build());
-        }
+    private Mono<ResponseEntity<Product>> insertProduct(@RequestBody Product product) throws BadRequestException {
+        return productService.saveProduct(product).map(p -> ResponseEntity.status(HttpStatus.CREATED).body(p));
     }
 
     @PutMapping()
-    private Mono<ResponseEntity<Product>> updateProduct(@RequestBody Product product) {
-        try {
-            return productService.updateProduct(product)
-                    .map(ResponseEntity::ok)
-                    .defaultIfEmpty(ResponseEntity.badRequest().build());
-        } catch (IllegalArgumentException e) {
-            return Mono.just(ResponseEntity.badRequest().build());
-        } catch (Exception e) {
-            return Mono.just(ResponseEntity.internalServerError().build());
-        }
+    private Mono<ResponseEntity<Product>> updateProduct(@RequestBody Product product) throws BadRequestException {
+        return productService.updateProduct(product).map(ResponseEntity::ok);
     }
 
     @DeleteMapping("/{sku}")
-    private Mono<ResponseEntity<Void>> deleteProductBySku(@PathVariable String sku) {
-        try {
-           return productService.deleteProductBySku(sku).map( r -> ResponseEntity.ok().<Void>build())
-                    .defaultIfEmpty(ResponseEntity.notFound().build());
-        } catch (IllegalArgumentException e) {
-            return Mono.just(ResponseEntity.badRequest().build());
-        } catch (Exception e) {
-            return Mono.just(ResponseEntity.internalServerError().build());
-        }
+    private Mono<ResponseEntity<Void>> deleteProductBySku(@PathVariable String sku) throws BadRequestException {
+       return productService.deleteProductBySku(sku).map( r -> ResponseEntity.ok().<Void>build());
     }
 }

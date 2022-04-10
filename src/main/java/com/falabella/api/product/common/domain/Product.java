@@ -16,9 +16,9 @@ public class Product {
     private String name;
     private String brand;
     private String size;
-    private Double price;
+    private Float price;
     private URL principalImage;
-    private List<String> otherImages;
+    private List<URL> otherImages;
 
     public String getId() {
         return id;
@@ -60,11 +60,11 @@ public class Product {
         this.size = size;
     }
 
-    public Double getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -76,11 +76,11 @@ public class Product {
         this.principalImage = principalImage;
     }
 
-    public List<String> getOtherImages() {
+    public List<URL> getOtherImages() {
         return otherImages;
     }
 
-    public void setOtherImages(List<String> otherImages) {
+    public void setOtherImages(List<URL> otherImages) {
         this.otherImages = otherImages;
     }
 }

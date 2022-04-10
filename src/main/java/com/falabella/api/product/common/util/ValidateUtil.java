@@ -27,10 +27,10 @@ public class ValidateUtil {
         return false;
     }
 
-    public static boolean validatePrice(Double price) {
+    public static boolean validatePrice(Float price) {
         return price != null
-                && price >= 1D
-                && price <= 99999999D;
+                && price >= 1.0
+                && price <= 99999999.0;
     }
 
     public static boolean validateName(String name) {
