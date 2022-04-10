@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  fbmongodb:
+    image: mongo:4.4
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb-data-fb:/data/db
+      - mongodb-config-fb:/data/configdb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    networks:
+      - fb_network
+
+  product:
+    build:
+      context: ./
+    restart: always
+    depends_on:
+      - mongodb-fb
+    ports:
+      - 8010:8080
+      - 8181:8000
+    environment:
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_DB=${MONGO_DB}
+      - MONGO_DB_AUTH=${MONGO_DB_AUTH}
+    networks:
+      - fb_network
+networks:
+  fb_network:
+    driver: bridge
+
+volumes:
+  mongodb-data-fb:
+  mongodb-config-fb:
