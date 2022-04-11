@@ -1,19 +1,116 @@
 # API documentation
-This application has a product API service with spring boot v2.6.6 (webflux) and a database mongo 4.4.0 as persistence.
+This application is a products API service build with spring boot (v2.6.6) using webflux and a database mongo 4.4.0 as persistence. These technologies were chosen because this api does not need relational tables and the web flux speeds up the requests to list objects, by not having locks and concatenating requests.
 
-## Swagger documentation
+## Swagger documentation (swagger.yaml)
 ### Endpoints
 
 - list all products
-> [GET]  /products
+```yaml
+/products:
+  get:
+    tags:
+      - product-controller
+    operationId: getAllProducts
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
+```
+
 - get a product by sku
-> [GET] /products/{sku}
+```yaml
+/products/{sku}:
+    get:
+      tags:
+        - product-controller
+      operationId: getProductBySku
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+```
+
 - store a product
-> [POST] /products
+```yaml
+/products:
+  post:
+    tags:
+      - product-controller
+    operationId: insertProduct
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+      required: true
+    responses:
+      '201':
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+```
+
 - update a product
-> [PUT] /products
+```yaml
+/products:
+  put:
+    tags:
+      - product-controller
+    operationId: updateProduct
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+      required: true
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+```
+
 - delete a product by sku
-> [DELETE] /products/{sku}
+```yaml
+/products/{sku}:
+  delete:
+        tags:
+          - product-controller
+        operationId: deleteProductBySku
+        parameters:
+          - name: sku
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: OK
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ResponseError'
+```
 
 ### Objects
 Product object are used to describe products in the api.
@@ -112,6 +209,16 @@ networks:
 volumes:
   mongodb-data-fb:
   mongodb-config-fb:
+```
+
+.env file: environment variables for docker-compose. It is recommended to use secrets.
+```yaml
+MONGO_HOST=fbmongodb
+MONGO_PORT=27017
+MONGO_USERNAME=mongoadmin
+MONGO_PASSWORD=fb-pass..123
+MONGO_DB=fb
+MONGO_DB_AUTH=admin
 ```
 
 Both containers reside on the same network - the product api is listening on port `8080` and MongoDB is
