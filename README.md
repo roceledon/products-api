@@ -213,10 +213,10 @@ volumes:
 
 .env file: environment variables for docker-compose. It is recommended to use secrets.
 ```yaml
-MONGO_HOST=fbmongodb
+MONGO_HOST=mongodb
 MONGO_PORT=27017
 MONGO_USERNAME=mongoadmin
-MONGO_PASSWORD=fb-pass..123
+MONGO_PASSWORD=your-pass..123
 MONGO_DB=fb
 MONGO_DB_AUTH=admin
 ```

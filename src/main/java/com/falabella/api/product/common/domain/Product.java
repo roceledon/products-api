@@ -20,6 +20,13 @@ public class Product {
     private URL principalImage;
     private List<URL> otherImages;
 
+    public Product() {
+    }
+
+    public Product(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

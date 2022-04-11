@@ -48,6 +48,6 @@ public class ValidateUtil {
     }
 
     public static boolean validatePrincipalImage(URL principalImage) {
-        return principalImage == null || !principalImage.toString().isBlank();
+        return principalImage != null;
     }
 }

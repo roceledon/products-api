@@ -41,7 +41,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public Mono<ResponseEntity<ResponseError>> handleNotFoundException(Exception e) {
+    public Mono<ResponseEntity<ResponseError>> handleException(Exception e) {
         ResponseError error = new ResponseError();
         error.setTimestamp(new Date());
         error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

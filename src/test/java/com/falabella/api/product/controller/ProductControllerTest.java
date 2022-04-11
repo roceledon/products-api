@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductControllerTest {
@@ -67,12 +66,14 @@ public class ProductControllerTest {
         product.setSku("FAL-1000000");
         product.setName("product");
         product.setBrand("brand");
+        product.setSize("size");
         product.setPrice(100D);
         product.setPrincipalImage(new URL("https://images.falabella.com/v3/assets/blt7c5c2f2f888a7cc3/blta97d44edaed86fbc/61dc4cfb1757dc6aed2adcea/FALABELLA-100122.jpg"));
+        product.setOtherImages(List.of(new URL[]{new URL("https://images.falabella.com/v3/assets/blt7c5c2f2f888a7cc3/blta97d44edaed86fbc/61dc4cfb1757dc6aed2adcea/FALABELLA-100122.jpg")}));
 
         Mockito.when(productService.saveProduct(product)).thenReturn(Mono.just(product));
 
-        productController.insertProduct(product);
+        productController.insertProduct(product).block();
         Mockito.verify(productService, Mockito.times(1)).saveProduct(product);
     }
 
@@ -118,7 +119,7 @@ public class ProductControllerTest {
     @Test
     public void shouldDeleteByIdWorks() throws BadRequestException {
         Mockito.when(productService.deleteProductBySku(Mockito.anyString())).thenReturn(Mono.empty());
-        productController.deleteProductBySku(Mockito.anyString());
+        productController.deleteProductBySku("FAL-1000015").block();
         Mockito.verify(productService, Mockito.times(1)).deleteProductBySku(Mockito.anyString());
     }
 

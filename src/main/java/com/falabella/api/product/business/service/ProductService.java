@@ -36,7 +36,7 @@ public class ProductService {
         if(ValidateUtil.validateProduct(product)) {
             return productRepository.findBySku(product.getSku())
                     .switchIfEmpty(productRepository.save(product))
-                    .flatMap(p -> (p.getId().equals(product.getId())) ? Mono.just(p) : Mono.error(new BadRequestException("Product already exists")));
+                    .flatMap(p -> (p != null && p.getId() != null && p.getId().equals(product.getId())) ? Mono.just(p) : Mono.error(new BadRequestException("Product already exists")));
         } else {
             throw new BadRequestException("Product is not valid");
         }
