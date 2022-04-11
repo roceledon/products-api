@@ -34,7 +34,7 @@ services:
     networks:
       - fb_network
 networks:
-  fb_network:fb
+  fb_network:
     driver: bridge
 
 volumes:
