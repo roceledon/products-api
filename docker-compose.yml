@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  fbmongodb:
+  mongodb:
     image: mongo:4.4
     restart: always
     ports:
-      - 27018:27017
+      - 27017:27017
     volumes:
       - mongodb-data-fb:/data/db
       - mongodb-config-fb:/data/configdb
@@ -22,8 +22,8 @@ services:
     depends_on:
       - mongodb-fb
     ports:
-      - 8010:8080
-      - 8181:8000
+      - 8080:8080
+      - 8000:8000
     environment:
       - MONGO_HOST=${MONGO_HOST}
       - MONGO_PORT=${MONGO_PORT}

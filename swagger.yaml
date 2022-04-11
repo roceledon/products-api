@@ -1,0 +1,190 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /products:
+    get:
+      tags:
+        - product-controller
+      operationId: getAllProducts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    put:
+      tags:
+        - product-controller
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Internal error server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    post:
+      tags:
+        - product-controller
+      operationId: insertProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Internal error server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+  /products/{sku}:
+    get:
+      tags:
+        - product-controller
+      operationId: getProductBySku
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Internal error server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+    delete:
+      tags:
+        - product-controller
+      operationId: deleteProductBySku
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Internal error server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        sku:
+          type: string
+        name:
+          type: string
+        brand:
+          type: string
+        size:
+          type: string
+        price:
+          type: number
+          format: double
+        principalImage:
+          type: string
+          format: url
+        otherImages:
+          type: array
+          items:
+            type: string
+            format: url
+    ResponseError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date
+          example: 'yyyy-MM-ddTHH:mm:ss.SSSZ'
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
