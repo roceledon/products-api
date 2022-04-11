@@ -159,6 +159,8 @@ ResponseError:
 # Architecture
 This api use docker and docker-compose to run. The necessary configuration information can be seen in the services section of the associated `docker-compose.yml` file:
 
+## Services
+
 mongodb:
 ```yaml
  mongodb:
@@ -211,7 +213,13 @@ volumes:
   mongodb-config-fb:
 ```
 
-.env file: environment variables for docker-compose. It is recommended to use secrets.
+Both containers reside on the same network - the product api is listening on port `8080` and MongoDB is
+listening on the default port `27017`. The two ports are available from
+outside the network so that cUrl or Postman can access them without having to be run from inside the network.
+
+## .env file
+
+Environment variables for docker-compose. It is recommended to use secrets.
 ```yaml
 MONGO_HOST=mongodb
 MONGO_PORT=27017
@@ -220,10 +228,6 @@ MONGO_PASSWORD=your-pass..123
 MONGO_DB=fb
 MONGO_DB_AUTH=admin
 ```
-
-Both containers reside on the same network - the product api is listening on port `8080` and MongoDB is
-listening on the default port `27017`. The two ports are available from
-outside the network so that cUrl or Postman can access them without having to be run from inside the network.
 
 # Prerequisites
 ## Docker
